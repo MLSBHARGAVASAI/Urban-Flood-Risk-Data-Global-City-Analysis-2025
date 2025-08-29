@@ -62,7 +62,7 @@ The insights from this study will help **urban planners and policymakers** prior
 
 ### 2. Load Dataset  
 ```python
-df = pd.read_excel('/content/urban_pluvial_flood_risk_dataset.xlsx')
+df = pd.read_csv('/content/urban_pluvial_flood_risk_dataset.csv') 
 ```
 
 ### 3. Dataset Overview  
