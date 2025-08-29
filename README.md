@@ -18,15 +18,20 @@ To identify **high-risk urban segments** and uncover **patterns of vulnerability
 
 ---
 
-## 📊 Problem Statement  
-Urban flooding is an escalating threat worldwide.  
-The aim of this project is to **analyze and visualize urban flood risk patterns** by answering:  
+## 📌**Problem Statement**
 
-1. Which cities and neighborhoods are most vulnerable?  
-2. How do elevation, land use, soil, and drainage affect flood risk?  
-3. What historical rainfall trends and multi-label risk factors emerge?  
+Urban flooding is an escalating threat worldwide due to climate change, rapid urbanization, and inadequate drainage infrastructure. Understanding which areas are most vulnerable is critical for effective disaster management and climate resilience.  
 
-This Week 1 project focuses on **data understanding and exploratory analysis**, laying the foundation for **predictive modeling** in later stages.  
+This analysis focuses on **urban flood risk segments** across global cities to identify high-risk areas and uncover patterns using:  
+
+- Segment elevation and topography  
+- Land-use types and soil infiltration  
+- Storm drainage infrastructure  
+- Historical rainfall intensity and return periods  
+- Multi-label risk indicators (e.g., ponding hotspots, low-lying areas, sparse drainage)  
+
+The insights from this study will help **urban planners and policymakers** prioritize mitigation strategies, improve infrastructure, and reduce flood-related hazards.
+
 
 ---
 
