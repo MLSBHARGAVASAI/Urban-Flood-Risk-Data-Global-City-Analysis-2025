@@ -87,7 +87,9 @@ pd.DataFrame({'Missing Values': missing, 'Percentage (%)': missing_percent})
 - **Soil Group** → 12.2% missing  
 - **Rainfall Source** → 10.6% missing  
 - **Drainage Density** → 9.6% missing  
-- **Storm Drain Type** → 6.0% missing  
+- **Storm Drain Type** → 6.0% missing
+-  
+## 📌 Week 2 – EDA, Feature Engineering & Modeling
 
 ### 7. Exploratory Data Analysis (EDA)  
 - ✅ **Top 10 Cities with Most Segments** → Manila, San Francisco, Philadelphia, Rotterdam, Athens…  
@@ -106,3 +108,75 @@ pd.DataFrame({'Missing Values': missing, 'Percentage (%)': missing_percent})
 This confirms that low elevation, sparse drainage, and high rainfall intensity are strong drivers of flooding risk.
 
 
+
+### 9. Exploratory Data Analysis (EDA)
+- **City Distribution**: Bar chart of top 10 cities.
+- **Elevation**: Histogram showing most roads lie at lower elevations.
+- **Land Use**: Pie chart of land use categories.
+- **Risk Labels**: Frequency of each risk factor (e.g., `low_lying`, `sparse_drainage`).
+
+---
+
+### 10. Correlation Analysis
+- Computed correlations among numeric features:
+  - Elevation vs. rainfall
+  - Drainage density vs. storm drain proximity
+- Heatmap visualization showed weak/moderate correlations.
+
+---
+
+### 11. Feature Engineering
+Created new features for better modeling:
+- `rainfall_intensity_log`: log-transformed rainfall
+- `is_low_lying`: binary flag for elevation ≤ 5m
+- `drain_prox_bin`: binned storm drain proximity
+- `drainage_sparse`: binary flag for low drainage density
+- Catchment-level aggregates: mean elevation, rainfall, drainage density, segment count
+- `spatial_cluster`: KMeans cluster on latitude/longitude
+
+---
+
+### 12. Data Transformation
+- **Numerical features** → scaled using `StandardScaler`
+- **Categorical features** → one-hot encoded using `OneHotEncoder`
+- Built preprocessing pipeline with `ColumnTransformer`
+
+---
+
+### 13. Model Training
+- Base model: **Random Forest Classifier** (200 trees, max depth = 12)
+- Wrapped with `MultiOutputClassifier` to support multiple labels.
+- Train-test split: 80% training, 20% testing.
+
+---
+
+### 14. Model Evaluation
+- Used **F1-score** (better for imbalanced datasets).
+- Results:
+  - `monitor`: 0.999
+  - `low_lying`: 0.996
+  - `sparse_drainage`: 1.000
+  - `ponding_hotspot`: 0.625
+  - `extreme_rain_history`: 0.991
+  - `event_YYYY-MM-DD`: 0.0 (rare labels, not enough samples)
+
+👉 Average F1 = low due to rare event labels, but strong on general risk categories.
+
+---
+
+### 15. Feature Importance
+- Top predictors: elevation, rainfall intensity (log), storm drain proximity
+- Catchment-level rainfall & elevation were also strong signals.
+
+---
+
+### 16. Visualization – Ponding Hotspots
+Mapped all `ponding_hotspot` segments on **OpenStreetMap**:
+
+```python
+mask = df['risk__ponding_hotspot'] == True
+fig = px.scatter_mapbox(df[mask], lat='latitude', lon='longitude', hover_name='segment_id',
+                        hover_data=['city_name','land_use','elevation_m','historical_rainfall_intensity_mm_hr'],
+                        zoom=3, height=600)
+fig.update_layout(mapbox_style='open-street-map', title='Ponding Hotspots Locations')
+fig.show()
